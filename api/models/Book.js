@@ -7,7 +7,10 @@ import mongoose from 'mongoose';
  */
 
 const schema = new mongoose.Schema({
-  author: String,
+  author: {
+    type: String,
+    required: true,
+  },
   title: String,
   genre: String,
   category: String,
