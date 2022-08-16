@@ -1,7 +1,8 @@
 import http from 'http';
+import api from './api/api.js';
 
 const port = 3000;
-const server = http.createServer();
+const server = http.createServer(api);
 
 server.on('listening', () => {
   console.log(`Servidor escuchando en el puerto ${port} ✅`);
