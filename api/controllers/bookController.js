@@ -51,7 +51,37 @@ const getBookById = async (req, res) => {
   }
 };
 
-const updateBookById = (req, res) => {};
-const deleteBookById = (req, res) => {};
+const updateBookById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedBook = await Book.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    return res.json({
+      msg: 'Libro actualizado',
+      data: { book: updatedBook },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: 'Error al actualizar libro',
+      error,
+    });
+  }
+};
+
+const deleteBookById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Book.findByIdAndDelete(id);
+    return res.json({
+      msg: 'Elemento eliminado',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: 'Error al borrar libro por id',
+      error,
+    });
+  }
+};
 
 export { getAllBooks, createBook, getBookById, updateBookById, deleteBookById };
