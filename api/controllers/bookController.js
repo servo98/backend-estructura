@@ -37,6 +37,11 @@ const getBookById = async (req, res) => {
   try {
     const { id } = req.params;
     const book = await Book.findById(id);
+    if (!book) {
+      return res.status(404).json({
+        msg: 'No existe el libro',
+      });
+    }
     return res.json({
       msg: 'Libro encontrado',
       data: {
@@ -72,9 +77,10 @@ const updateBookById = async (req, res) => {
 const deleteBookById = async (req, res) => {
   try {
     const { id } = req.params;
-    await Book.findByIdAndDelete(id);
+    const book = await Book.findByIdAndDelete(id);
     return res.json({
       msg: 'Elemento eliminado',
+      data: { book },
     });
   } catch (error) {
     return res.status(500).json({
