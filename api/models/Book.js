@@ -11,7 +11,10 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  title: String,
+  title: {
+    type: String,
+    required: true,
+  },
   genre: String,
   category: String,
   language: String,
