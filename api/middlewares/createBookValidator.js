@@ -1,7 +1,3 @@
-/**
- * 1.- Un schema de joi
- * 2.- Validar en un try catch
- */
 import joi from 'joi';
 
 const createBookSchema = joi.object({
