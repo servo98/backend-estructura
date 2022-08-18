@@ -1,12 +1,14 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jwt-simple';
 import User from '../models/User.js';
+import config from '../config/index.js';
 
 const register = async (req, res) => {
   try {
     /**
      * middleware de validación 🟩
      * encriptar el password 🟩
-     * guardar usuario nuevo con el pass encriptado
+     * guardar usuario nuevo con el pass encriptado 🟩
      */
     const encryptedPass = await bcrypt.hash(req.body.password, 4);
     req.body.password = encryptedPass;
@@ -34,7 +36,8 @@ const login = async (req, res) => {
    * 1.- Validar que venga pass y correo ✅
    * 2.- Buscar un usuario con ese correo ✅
    * 3.- Comprar contraseñas con bcrypt ✅
-   * 4.- Si todo coincide crear token y regresarlo
+   * 4.- Si todo coinci
+   * de crear token y regresarlo
    * 5.- si no coincide regresar un 401 ✅
    */
   try {
@@ -55,6 +58,17 @@ const login = async (req, res) => {
       });
     }
     //TODO: crear token y regresarlo
+
+    const payload = {
+      userId: user.id,
+    };
+
+    const token = jwt.encode(payload, config.jwt.secret);
+
+    return res.json({
+      msg: 'Login correcto',
+      data: { token },
+    });
   } catch (error) {
     return res.status(500).json({
       msg: 'Error al hacer login',
