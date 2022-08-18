@@ -29,6 +29,37 @@ const register = async (req, res) => {
   }
 };
 
-const login = () => {};
+const login = async (req, res) => {
+  /**
+   * 1.- Validar que venga pass y correo ✅
+   * 2.- Buscar un usuario con ese correo ✅
+   * 3.- Comprar contraseñas con bcrypt ✅
+   * 4.- Si todo coincide crear token y regresarlo
+   * 5.- si no coincide regresar un 401 ✅
+   */
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        msg: 'Usuario no encontrado',
+      });
+    }
+
+    const passCorrect = await bcrypt.compare(req.body.password, user.password);
+    if (!passCorrect) {
+      return res.status(401).json({
+        msg: 'Credenciales inválidas',
+      });
+    }
+    //TODO: crear token y regresarlo
+  } catch (error) {
+    return res.status(500).json({
+      msg: 'Error al hacer login',
+    });
+  }
+};
 
 export { login, register };
