@@ -59,8 +59,12 @@ const login = async (req, res) => {
     }
     //TODO: crear token y regresarlo
 
+    const expirationDate = new Date();
+    expirationDate.setMinutes(expirationDate.getMinutes() + 3);
+
     const payload = {
       userId: user.id,
+      expirationDate,
     };
 
     const token = jwt.encode(payload, config.jwt.secret);

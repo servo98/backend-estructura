@@ -32,6 +32,13 @@ const isAuth = async (req, res, next) => {
       });
     }
 
+    const expirationDate = new Date(payload.expirationDate);
+    if (expirationDate.getTime() < new Date().getTime()) {
+      return res.status(400).json({
+        msg: 'El token ha expirado',
+      });
+    }
+
     next();
   } catch (error) {
     return res.status(401).json({
